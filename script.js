@@ -8,10 +8,10 @@
    - 'formspree': Sends submissions to your email via Formspree (No server required)
    ========================================================================== */
 const FORM_CONFIG = {
-    provider: 'simulation', // Change to 'web3forms' or 'formspree' when ready
+    provider: 'web3forms', // Change to 'web3forms' or 'formspree' when ready
     
     // Get your free Web3Forms Access Key from: https://web3forms.com/
-    web3forms_access_key: 'YOUR_WEB3FORMS_KEY_HERE',
+    web3forms_access_key: 'f89bea2a-1f85-4fce-b4ef-05417b966d1d',
     
     // Create a form at https://formspree.io/ and paste your form ID or full URL below
     formspree_url: 'https://formspree.io/f/YOUR_FORMSPREE_ID_HERE'
