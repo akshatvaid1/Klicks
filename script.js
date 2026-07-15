@@ -1,5 +1,22 @@
 // Klicks AI - Interactive Scripting
 
+/* ==========================================================================
+   FORM SUBMISSION CONFIGURATION
+   Configure where you want to receive form submissions:
+   - 'simulation': Displays the success message instantly (for testing)
+   - 'web3forms': Sends submissions to your email via Web3Forms (No server required)
+   - 'formspree': Sends submissions to your email via Formspree (No server required)
+   ========================================================================== */
+const FORM_CONFIG = {
+    provider: 'simulation', // Change to 'web3forms' or 'formspree' when ready
+    
+    // Get your free Web3Forms Access Key from: https://web3forms.com/
+    web3forms_access_key: 'YOUR_WEB3FORMS_KEY_HERE',
+    
+    // Create a form at https://formspree.io/ and paste your form ID or full URL below
+    formspree_url: 'https://formspree.io/f/YOUR_FORMSPREE_ID_HERE'
+};
+
 // Add js-enabled class to HTML element once script loads
 document.documentElement.classList.add('js-enabled');
 
@@ -155,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* ==========================================================================
-       5. CONTACT FORM SYSTEM SUBMIT
+       5. CONTACT FORM SYSTEM SUBMIT (REAL INTEGRATION)
        ========================================================================== */
     const projectForm = document.getElementById('project-form');
     const successContainer = document.getElementById('form-success');
@@ -164,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
         projectForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // Perform fade animation representing request transfer
             const submitBtn = projectForm.querySelector('button[type="submit"]');
             const originalBtnText = submitBtn.innerHTML;
             
@@ -178,16 +194,81 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            // Simulate server delivery (1.5 seconds)
-            setTimeout(() => {
-                // Clear form
-                projectForm.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
+            // 1. Simulation Provider
+            if (FORM_CONFIG.provider === 'simulation') {
+                setTimeout(() => {
+                    projectForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                    successContainer.classList.add('active');
+                }, 1500);
+            } 
+            
+            // 2. Web3Forms Provider
+            else if (FORM_CONFIG.provider === 'web3forms') {
+                const formData = new FormData(projectForm);
+                formData.append('access_key', FORM_CONFIG.web3forms_access_key);
+                formData.append('subject', 'New Klicks AI Audit Request');
+                formData.append('from_name', 'Klicks AI Website');
 
-                // Toggle success animation modal
-                successContainer.classList.add('active');
-            }, 1500);
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(async (response) => {
+                    const result = await response.json();
+                    if (response.status === 200) {
+                        projectForm.reset();
+                        successContainer.classList.add('active');
+                    } else {
+                        console.error('Web3Forms Error:', result);
+                        alert(result.message || 'Error sending form submission.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Form Submit Error:', error);
+                    alert('Failed to submit form. Please check your connection and try again.');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                });
+            } 
+            
+            // 3. Formspree Provider
+            else if (FORM_CONFIG.provider === 'formspree') {
+                const formData = new FormData(projectForm);
+                const data = {};
+                formData.forEach((value, key) => data[key] = value);
+
+                fetch(FORM_CONFIG.formspree_url, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        projectForm.reset();
+                        successContainer.classList.add('active');
+                    } else {
+                        response.json().then(data => {
+                            console.error('Formspree Error:', data);
+                            alert('Error sending form submission: ' + (data.errors ? data.errors.map(e => e.message).join(', ') : 'Unknown error'));
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Form Submit Error:', error);
+                    alert('Failed to submit form. Please check your connection and try again.');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                });
+            }
         });
     }
 
