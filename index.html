@@ -21,15 +21,25 @@
     <!-- Fixed Background Spline 3D Scene -->
     <canvas id="canvas3d" class="spline-viewport"></canvas>
     <script type="module">
-        import { Application } from 'https://esm.sh/@splinetool/runtime';
-        const canvas = document.getElementById('canvas3d');
-        const spline = new Application(canvas);
-        window.spline = spline;
-        spline.load('./scene.splinecode')
-            .then(() => {
-                console.log('Background Spline sphere loaded!');
-            })
-            .catch(err => console.error(err));
+        // Only load heavy Spline WebGL 3D rendering on desktop (>= 768px) to optimize mobile performance
+        if (window.innerWidth >= 768) {
+            import('https://esm.sh/@splinetool/runtime')
+                .then(({ Application }) => {
+                    const canvas = document.getElementById('canvas3d');
+                    const spline = new Application(canvas);
+                    window.spline = spline;
+                    spline.load('./scene.splinecode')
+                        .then(() => {
+                            console.log('Background Spline sphere loaded!');
+                        })
+                        .catch(err => console.error(err));
+                })
+                .catch(err => console.error('Failed to load Spline runtime:', err));
+        } else {
+            // Hide the canvas entirely on mobile to save GPU cycles and battery life
+            const canvas = document.getElementById('canvas3d');
+            if (canvas) canvas.style.display = 'none';
+        }
     </script>
 
     <!-- Navigation Bar -->
