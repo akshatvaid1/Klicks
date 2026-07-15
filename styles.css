@@ -551,6 +551,10 @@ p {
     gap: 24px;
 }
 
+.span-2 {
+    grid-column: span 2;
+}
+
 .service-card {
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -1349,6 +1353,10 @@ select.form-input {
     
     .services-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .span-2 {
+        grid-column: span 1;
     }
     
     .playground-container {
