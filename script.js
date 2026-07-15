@@ -276,9 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
        6. SCROLL-DRIVEN 3D BACKGROUND INTERACTION
        ========================================================================== */
     window.addEventListener('scroll', () => {
-        // Optimize for mobile by skipping scroll-driven 3D checks
-        if (window.innerWidth < 768) return;
-
         const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
         if (scrollHeight <= 0) return;
         const scrollPercent = window.scrollY / scrollHeight;
