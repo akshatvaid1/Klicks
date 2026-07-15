@@ -241,6 +241,20 @@ p {
     border-radius: 50%;
 }
 
+.logo-icon {
+    width: 28px;
+    height: 28px;
+    color: var(--text-primary);
+    display: inline-block;
+    vertical-align: middle;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-logo:hover .logo-icon,
+.footer-logo:hover .logo-icon {
+    transform: rotate(30deg) scale(1.1);
+}
+
 .nav-links {
     display: flex;
     align-items: center;
