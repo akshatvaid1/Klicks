@@ -259,7 +259,7 @@ export const TypographyLayer: React.FC<TypographyLayerProps> = ({
               textTransform: "uppercase" as const,
             }}
           >
-            Klicks AI
+            Kaarighar AI
           </span>
         </div>
       </div>

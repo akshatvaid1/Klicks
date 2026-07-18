@@ -202,7 +202,7 @@ export const KlicksHero: React.FC<z.infer<typeof klicksHeroSchema>> = () => {
             textTransform: "uppercase" as const,
           }}
         >
-          Klicks AI
+          Kaarighar AI
         </span>
       </div>
 

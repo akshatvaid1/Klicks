@@ -2,7 +2,7 @@ import "./index.css";
 import { Composition } from "remotion";
 import { KlicksHero, klicksHeroSchema } from "./KlicksHero";
 
-// Cinematic Hero Animation for Klicks AI
+// Cinematic Hero Animation for Kaarighar AI
 // 4K (3840x2160) at 60fps, 30 seconds = 1800 frames
 
 export const RemotionRoot: React.FC = () => {

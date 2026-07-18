@@ -1,4 +1,4 @@
-// Klicks AI - Interactive Scripting
+// Kaarighar AI - Interactive Scripting
 
 /* ==========================================================================
    FORM SUBMISSION CONFIGURATION
@@ -208,8 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
             else if (FORM_CONFIG.provider === 'web3forms') {
                 const formData = new FormData(projectForm);
                 formData.append('access_key', FORM_CONFIG.web3forms_access_key);
-                formData.append('subject', 'New Klicks AI Audit Request');
-                formData.append('from_name', 'Klicks AI Website');
+                formData.append('subject', 'New Kaarighar AI Audit Request');
+                formData.append('from_name', 'Kaarighar AI Website');
 
                 fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
