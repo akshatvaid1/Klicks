@@ -290,6 +290,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ==========================================================================
+       ROI / SAVINGS CALCULATOR LOGIC
+       ========================================================================== */
+    const leadsRange = document.getElementById('leads-range');
+    const wageRange = document.getElementById('wage-range');
+    const leadsVal = document.getElementById('leads-val');
+    const wageVal = document.getElementById('wage-val');
+    const hoursSaved = document.getElementById('hours-saved');
+    const moneySaved = document.getElementById('money-saved');
+    const conversionBoost = document.getElementById('conversion-boost');
+
+    function updateCalculator() {
+        if (!leadsRange || !wageRange) return;
+        const leads = parseInt(leadsRange.value, 10);
+        const wage = parseInt(wageRange.value, 10);
+
+        const hours = Math.round(leads * 0.5);
+        const money = hours * wage;
+        const boost = Math.min(42, Math.max(22, Math.round(20 + (leads / 200))));
+
+        if (leadsVal) leadsVal.textContent = leads.toLocaleString();
+        if (wageVal) wageVal.textContent = `$${wage}`;
+        if (hoursSaved) hoursSaved.textContent = `${hours} hrs`;
+        if (moneySaved) moneySaved.textContent = `$${money.toLocaleString()}`;
+        if (conversionBoost) conversionBoost.textContent = `+${boost}%`;
+    }
+
+    if (leadsRange && wageRange) {
+        leadsRange.addEventListener('input', updateCalculator);
+        wageRange.addEventListener('input', updateCalculator);
+        updateCalculator();
+    }
+
+    /* ==========================================================================
+       FAQ ACCORDION CONTROLLER
+       ========================================================================== */
+    const faqToggles = document.querySelectorAll('.faq-toggle');
+
+    faqToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const faqItem = toggle.closest('.faq-item');
+            const faqCollapse = faqItem.querySelector('.faq-collapse');
+            const isActive = faqItem.classList.contains('faq-open');
+
+            // Close all other FAQ items for a clean single-open accordion feel
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('faq-open');
+                const collapse = item.querySelector('.faq-collapse');
+                if (collapse) {
+                    collapse.style.maxHeight = '0px';
+                }
+                const btn = item.querySelector('.faq-toggle');
+                if (btn) {
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Toggle current item
+            if (!isActive) {
+                faqItem.classList.add('faq-open');
+                toggle.setAttribute('aria-expanded', 'true');
+                if (faqCollapse) {
+                    faqCollapse.style.maxHeight = faqCollapse.scrollHeight + 'px';
+                }
+            }
+        });
+    });
+
+    /* ==========================================================================
        7. FOUNDER PROFILE SELECTOR TRIGGER
        ========================================================================== */
     const akshatProfileBtn = document.querySelector('#profile-akshat .profile-avatar-btn');
